@@ -1,0 +1,16 @@
+.demo-page {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .demo-section {
+    margin: 2rem 0;
+  }
+  
+  .demo-component {
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin: 1rem 0;
+  }
