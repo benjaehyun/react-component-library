@@ -1,52 +1,54 @@
 import React, { useState } from 'react';
-import { NavbarProps, NavLink } from './types';
 import './Navbar.css';
 
-const defaultLinks: NavLink[] = [
-    { text: 'Home', href: '/' },
-    { text: 'About', href: '/about' },
-    { text: 'Services', href: '/services' },
-    { text: 'Contact', href: '/contact' }
-];
-
-const Navbar: React.FC<NavbarProps> = ({
-    logo = '/api/placeholder/40/40',
-    brandName = 'Brand Name',
-    links = defaultLinks,
+const Navbar = ({
+    logo,
+    brandName = 'Brand',
+    links = [],
     className = '',
     isResponsive = true,
     theme = 'light',
-    onLinkClick
-    }) => {
+    onLinkClick,
+}) => {
     const [isOpen, setIsOpen] = useState(false);
 
-    const toggleMenu = () => {
-        setIsOpen(!isOpen);
-    };
+    const toggleMenu = () => setIsOpen(!isOpen);
 
-    const handleLinkClick = (link: NavLink) => {
+    const handleLinkClick = (link) => {
+        if (onLinkClick) {
+            onLinkClick(link);
+        }
         if (isResponsive) {
             setIsOpen(false);
         }
-        onLinkClick?.(link);
     };
 
     return (
-        <nav className={`navbar ${theme} ${className} ${isOpen ? 'mobile-open' : ''}`}>
+        <nav className={`navbar ${theme} ${className}`} role="navigation" aria-label="main navigation">
             <div className="navbar-container">
-                {/* Moved brand outside of the button container */}
                 <div className="navbar-brand">
-                    <img src={logo} alt={brandName} className="navbar-logo" />
+                    {logo ? (
+                        <img 
+                            src={logo} 
+                            alt={`${brandName} logo`} 
+                            className="navbar-logo"
+                        />
+                    ) : (
+                        <img 
+                            src="/api/placeholder/40/40" 
+                            alt="Placeholder logo" 
+                            className="navbar-logo"
+                        />
+                    )}
                     <span className="navbar-brand-name">{brandName}</span>
                 </div>
 
-                {/* Mobile toggle button is now a sibling */}
                 {isResponsive && (
                     <button 
                         className={`navbar-toggle ${isOpen ? 'open' : ''}`}
-                        onClick={toggleMenu}
-                        aria-label="Toggle navigation"
+                        aria-label="menu"
                         aria-expanded={isOpen}
+                        onClick={toggleMenu}
                     >
                         <span className="toggle-bar"></span>
                         <span className="toggle-bar"></span>
@@ -57,7 +59,7 @@ const Navbar: React.FC<NavbarProps> = ({
                 <ul className={`navbar-links ${isOpen ? 'open' : ''}`}>
                     {links.map((link, index) => (
                         <li key={index} className="navbar-item">
-                            <a 
+                            <a
                                 href={link.href}
                                 className="navbar-link"
                                 onClick={(e) => {
