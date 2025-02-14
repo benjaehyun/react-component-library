@@ -11,11 +11,26 @@ import {
   Button,
   MenuItem,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
-const Navbar = ({
+interface NavLink {
+  text: string;
+  href: string;
+  icon?: React.ReactNode;
+}
+
+interface NavbarProps {
+  logo?: string;
+  brandName?: string;
+  links?: NavLink[];
+  isResponsive?: boolean;
+  theme?: 'light' | 'dark';
+  onLinkClick?: (link: NavLink) => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({
   logo,
   brandName = 'Brand',
   links = [],
@@ -23,19 +38,19 @@ const Navbar = ({
   theme = 'light',
   onLinkClick
 }) => {
-  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const muiTheme = useTheme();
   const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'));
 
-  const handleOpenNavMenu = (event) => {
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (): void => {
     setAnchorElNav(null);
   };
 
-  const handleLinkClick = (link) => {
+  const handleLinkClick = (link: NavLink): void => {
     if (onLinkClick) {
       onLinkClick(link);
     }
@@ -45,10 +60,14 @@ const Navbar = ({
   return (
     <AppBar 
       position="static" 
-      color={theme === 'light' ? 'default' : 'primary'}
+      sx={{ 
+        bgcolor: theme === 'light' ? '#ffffff' : '#1f2937',
+        color: theme === 'light' ? '#000000' : '#ffffff',
+        boxShadow: 1
+      }}
       elevation={1}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth={false} >
         <Toolbar disableGutters>
           {/* Desktop Logo */}
           <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 2 }}>
@@ -121,7 +140,10 @@ const Navbar = ({
                     key={link.text} 
                     onClick={() => handleLinkClick(link)}
                   >
-                    <Typography textAlign="center">{link.text}</Typography>
+                    <Typography textAlign="center">
+                      {link.icon && <span className="menu-icon">{link.icon}</span>}
+                      {link.text}
+                    </Typography>
                   </MenuItem>
                 ))}
               </Menu>
@@ -168,8 +190,15 @@ const Navbar = ({
               <Button
                 key={link.text}
                 onClick={() => handleLinkClick(link)}
-                sx={{ my: 2, color: 'inherit', display: 'block' }}
+                sx={{ 
+                  my: 2, 
+                  color: 'inherit', 
+                  display: 'flex', 
+                  alignItems: 'center',
+                  gap: 1
+                }}
               >
+                {link.icon}
                 {link.text}
               </Button>
             ))}

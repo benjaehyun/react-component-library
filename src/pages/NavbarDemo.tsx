@@ -1,6 +1,7 @@
 import VanillaNavbar from '../components/Navbar/vanillaJSCSS/Navbar';
 import TailwindNavbar from '../components/Navbar/tailwindTS/Navbar';
-import MUINavbar from '../components/Navbar/materialUI/Navbar';
+import MUINavbar from '../components/Navbar/materialTS/Navbar';
+import ShadcnNavbar from '../components/Navbar/shadcnTS/Navbar';
 import type { NavLink } from '../components/Navbar/vanillaTSCSS';
 import './NavbarDemo.css'; 
 
@@ -134,6 +135,47 @@ const NavbarDemo = () => {
                     <h3>With Custom Logo</h3>
                     <div className="demo-component">
                         <MUINavbar 
+                            logo="/api/placeholder/48/48"
+                            brandName="Custom Logo"
+                            links={links}
+                            onLinkClick={handleLinkClick}
+                        />
+                    </div>
+                </section>
+            </div>
+
+            <div className="implementation-section">
+                <h2>Shadcn Implementation</h2>
+                <p>Note: Be sure to implement with appropriate shadcn theme-provider light/dark mode adaptations</p>
+                
+                <section className="demo-section">
+                    <h3>Light Theme</h3>
+                    <div className="demo-component">
+                        <ShadcnNavbar 
+                            brandName="Light Brand"
+                            links={links}
+                            theme="light"
+                            onLinkClick={handleLinkClick}
+                        />
+                    </div>
+                </section>
+
+                <section className="demo-section">
+                    <h3>Dark Theme</h3>
+                    <div className="demo-component">
+                        <ShadcnNavbar 
+                            brandName="Dark Brand"
+                            links={links}
+                            theme="dark"
+                            onLinkClick={handleLinkClick}
+                        />
+                    </div>
+                </section>
+
+                <section className="demo-section">
+                    <h3>With Custom Logo</h3>
+                    <div className="demo-component">
+                        <ShadcnNavbar 
                             logo="/api/placeholder/48/48"
                             brandName="Custom Logo"
                             links={links}
